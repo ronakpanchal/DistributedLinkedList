@@ -1,3 +1,7 @@
+package com.nio.serevr_client;
+
+
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -7,6 +11,7 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Created by ronak on 2/2/2017.
@@ -20,6 +25,7 @@ public class NIOServer implements  Runnable{
     private Selector selector;
     private ServerSocketChannel serverChannel;
     private ByteBuffer buffer;
+    private LinkedList<Integer> list;
 
 
     public NIOServer(String address, int port) {
@@ -27,6 +33,7 @@ public class NIOServer implements  Runnable{
         this.port=port;
         this.listenAddress=new InetSocketAddress(this.address,this.port);
         this.buffer=ByteBuffer.allocate(2048);
+        list=new LinkedList<>();
     }
 
 
@@ -110,7 +117,19 @@ public class NIOServer implements  Runnable{
                 key.cancel();
                 return;
             }
-            System.out.print(new String(buffer.array()));
+            byte[] data = new byte[numRead];
+            System.arraycopy(buffer.array(), 0, data, 0, numRead);
+            String response=new String(data);
+            String[] arr=response.split(" ");
+
+                list.add(Integer.parseInt(arr[1]));
+
+            System.out.println("List Of Elements");
+            System.out.println("--------------------------------------------");
+            for(Integer i:list){
+                System.out.println(i);
+            }
+            System.out.println("--------------------------------------------");
         } catch (IOException e) {
             e.printStackTrace();
         }

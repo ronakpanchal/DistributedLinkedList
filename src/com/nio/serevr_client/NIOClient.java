@@ -1,3 +1,5 @@
+package com.nio.serevr_client;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -27,10 +29,8 @@ public class NIOClient implements Runnable{
         try {
             socketchannel=SocketChannel.open(this.address);
 
-            String message="Hello from "+this.clientName+"\n";
-            String[] msg_arr=message.split(" ");
-            for(int i=0;i<msg_arr.length;i++) {
-                byte[] msg_byte=new String(msg_arr[i]).getBytes();
+                String message="ADD "+this.clientName;
+                byte[] msg_byte=message.getBytes();
                 ByteBuffer buffer=ByteBuffer.wrap(msg_byte);
                 this.socketchannel.write(buffer);
                 buffer.clear();
@@ -39,7 +39,7 @@ public class NIOClient implements Runnable{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
+
             try {
 
                 Thread.sleep(10000);
